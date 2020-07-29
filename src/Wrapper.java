@@ -97,7 +97,6 @@ public class Wrapper implements Runnable{
 
                 if(!running) break;
                 // Delete randomly chosen row
-
                 String randomValue = "Select top 1 " + index + " from " + schemaTable[0] + "." + schemaTable[1] + " Order by newid()";
 
                 ResultSet resRand = st.executeQuery(randomValue);
@@ -160,9 +159,6 @@ public class Wrapper implements Runnable{
 
             // Assuming the first column of a table is the index, this string will be the index
             String index = "";
-
-            //TODO:
-            // Fix while loop to not choose dependant columns...
 
             // Locate index Column and randomly chosen column
             while((randomColumn-- > 0 && res.next()) || res.getString(1).contains("id")) {
@@ -414,13 +410,6 @@ public class Wrapper implements Runnable{
                         st.execute(insertCon);
                     break;
                 }
-            }
-
-            if(op == 4) {
-                op = getRandomInRange(0, 3);
-                String insertCon = "Insert into ##wrapperConnections(op) values(" + op + ")";
-                st.execute(insertCon);
-
             }
 
         } catch (Exception e) {
