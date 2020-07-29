@@ -13,10 +13,12 @@ import java.util.List;
 class Gui extends JFrame {
 
     ArrayList<Wrapper> wrappers;
+    ArrayList<Thread> threads;
     DefaultTableModel model;
     int selectedRow;
     boolean selected;
     static Connection con = null;
+
 
     public void refreshPerformance() {
 
@@ -25,11 +27,6 @@ class Gui extends JFrame {
             String updateGui = "Select op, ip, opPerSec, opPerformed from ##wrapperConnections";
 
             ResultSet res = st.executeQuery(updateGui);
-
-            while(res.next()) {
-
-                System.out.println(res.getString(1));
-            }
 
 
         } catch (Exception e) {
@@ -50,7 +47,10 @@ class Gui extends JFrame {
 
             Wrapper w = new Wrapper(this);
             wrappers.add(w);
-            new Thread(wrappers.get(wrappers.size() - 1)).start();
+            Thread t = new Thread(wrappers.get(wrappers.size() - 1));
+            t.start();
+            threads.add(t);
+
             String s = "";
 
             switch (w.op) {
@@ -87,8 +87,15 @@ class Gui extends JFrame {
         if(selected) {
 
             Wrapper w = wrappers.get(selectedRow);
+            Thread t = threads.get(selectedRow);
             w.running = false;
             model.removeRow(selectedRow);
+
+            try {
+                t.join();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             w.closeConnection();
             wrappers.remove(w);
@@ -121,8 +128,6 @@ class Gui extends JFrame {
 
 
         } catch (Exception e) {
-
-            e.printStackTrace();
             return 0;
         }
     }
@@ -147,6 +152,7 @@ class Gui extends JFrame {
 
     private Gui() {
 
+        threads = new ArrayList<>();
         wrappers = new ArrayList<>();
         model = new DefaultTableModel();
 
