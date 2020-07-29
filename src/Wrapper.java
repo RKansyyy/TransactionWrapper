@@ -63,19 +63,6 @@ public class Wrapper implements Runnable{
             }
             operationsPerformed += op == 0 ? 3*numOp : numOp;
 
-            try {
-                Statement st = getConnection().createStatement();
-
-                String updatePerformance = "Update ##wrapperConnections " +
-                                            "Set opPerSec = " + performance +
-                                            ", opPerformed = " + operationsPerformed +
-                                            " where op = " + op + ";";
-
-                st.execute(updatePerformance);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             SwingUtilities.invokeLater(() -> {
                 wow.refreshPerformance();
             });
