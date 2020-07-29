@@ -14,8 +14,6 @@ class Gui extends JFrame {
 
     ArrayList<Wrapper> wrappers;
     DefaultTableModel model;
-    DrawGraph graph;
-    List<Integer> scores;
     int selectedRow;
     boolean selected;
     static Connection con = null;
@@ -42,9 +40,6 @@ class Gui extends JFrame {
 
             model.setValueAt(new DecimalFormat("#.##").format(wrappers.get(i).performance), i, 1);
             model.setValueAt(new DecimalFormat("#.##").format(wrappers.get(i).operationsPerformed), i, 2);
-
-            scores.add((int)wrappers.get(i).performance);
-            graph = new DrawGraph(scores);
 
         }
     }
@@ -153,15 +148,12 @@ class Gui extends JFrame {
     private Gui() {
 
         wrappers = new ArrayList<>();
-        scores = new ArrayList<>();
         model = new DefaultTableModel();
 
         model.addColumn("Type");
         model.addColumn("Operations/Sec");
         model.addColumn("Operations");
 
-        graph = new DrawGraph(scores);
-        
 
         JTable jt = new JTable(model);
         JScrollPane sp = new JScrollPane(jt);
@@ -192,7 +184,6 @@ class Gui extends JFrame {
         });
 
         this.getContentPane().add(BorderLayout.NORTH, sp);
-        this.getContentPane().add(BorderLayout.CENTER, graph);
         this.getContentPane().add(BorderLayout.SOUTH, panel);
 
         this.setSize(500,600);
