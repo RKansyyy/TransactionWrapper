@@ -29,7 +29,7 @@ public class Wrapper implements Runnable{
         this.running = true;
         this.performance = 0;
         this.operationsPerformed = 0;
-        this.numOp = 10;
+        this.numOp = 20;
         this.tableNames = getSchemaTables();
         setOperation();
         if(op == 0) getData();
@@ -115,7 +115,7 @@ public class Wrapper implements Runnable{
                 diff += (post - pre);
             }
 
-            performance = 1000 / (diff/numOp);
+            performance = 1000 / (diff/(double)numOp);
 
 
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public class Wrapper implements Runnable{
                 diff += (post - pre);
             }
 
-            performance = 1000 / (diff/updatesPerTable);
+            performance = 1000 / (diff/(double)updatesPerTable);
 
         } catch (Exception e) {
 
@@ -233,7 +233,7 @@ public class Wrapper implements Runnable{
                 diff += (post - pre);
             }
 
-            performance = 1000 / (diff/selects);
+            performance = 1000 / (diff/(double)selects);
 
         } catch (Exception e) {
 
@@ -294,7 +294,7 @@ public class Wrapper implements Runnable{
                 }
 
             }
-            performance = 1000 / (diff/count);
+            performance = 1000 / (diff/(double)count);
 
             if(!resProduct.next() || !resCustomer.next()) {
 
